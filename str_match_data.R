@@ -3,15 +3,14 @@
 #### Enrique Montes
 #### October 21, 2019
 
-
-setwd("G:/My Drive/MBON/GLOBAL_MBON/P2P/P2P_Project/Biodiv_surveys/00-DataCurated/IPTFiles/rocky")
-
 rm(list=ls()) ## clear variables
 
-data <- read.csv("ARGENTINA-PUERTO MADRYN_ipt_occurrence.csv", header = TRUE)
-event <- read.csv("ARGENTINA-PUERTO MADRYN_ipt_event.csv", header = TRUE)
+setwd("~/DwC-extract/data")
 
-sel_str <- "PUNTALOMA" ## select site
+data <- read.csv("BRAZIL-APA COSTA DAS ALGAS_ipt_occurrence.csv", header = TRUE)
+event <- read.csv("BRAZIL-APA COSTA DAS ALGAS_ipt_event.csv", header = TRUE)
+
+sel_str <- "ENSEADADASGARCAS" ## select site
 
 df <- data$occurrenceID[grep(sel_str, data$occurrenceID)] ## extract indices for rows with selected site
 

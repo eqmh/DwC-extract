@@ -73,3 +73,40 @@ m <- leaflet(data) %>%
 m
 
 m
+
+## Generates a bubble plot on a map showing species richness and number of records per locality.
+library(ggplot2)
+library(maps)
+library(ggthemes)
+theme_set(theme_bw())
+library(sf)
+
+americas <- ggplot() +
+  borders("world", colour = "gray85", fill = "gray80", xlim = c(-140, -20), ylim = c(-70, 70)) +
+  geom_sf() +
+  coord_sf(xlim = c(-140, -20), ylim = c(-70, 70), expand = F) + 
+  labs(x = "Longitude", y = "Latitude")
+  coord_quickmap() +
+  theme_map()
+
+
+ssp_map <- americas +
+  geom_point(aes(x = long, y = lat, size = total.spp),
+             data = data, 
+             colour = 'purple', alpha = .3) +
+  scale_size_continuous(range = c(1, 12), 
+                        breaks = c(10, 20, 30, 40, 50)) +
+  labs(size = 'Number of species')
+ssp_map
+
+(records_map <- americas +
+  geom_point(aes(x = long, y = lat, size = total.records),
+             data = data, 
+             colour = 'blue', alpha = .3) +
+  scale_size_continuous(range = c(1, 12), 
+                        breaks = c(20, 50, 100, 150, 200)) +
+  labs(size = 'Number of records'))
+
+
+
+

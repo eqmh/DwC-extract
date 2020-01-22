@@ -7,10 +7,10 @@ rm(list=ls()) ## clear variables
 
 setwd("~/DwC-extract/data")
 
-data <- read.csv("USA-NORTHERNMA_ipt_occurrence.csv", header = TRUE)
-event <- read.csv("USA-NORTHERNMA_ipt_event.csv", header = TRUE)
+data <- read.csv("COLOMBIA-ISLA GORGONA_ipt_occurrence.csv", header = TRUE)
+event <- read.csv("COLOMBIA-ISLA GORGONA_ipt_event.csv", header = TRUE)
 
-sel_str <- "PUMPHOUSE" ## select site
+sel_str <- "PLAYAVERDE" ## select site
 
 df <- data$occurrenceID[grep(sel_str, data$occurrenceID)] ## extract indices for rows with selected site
 

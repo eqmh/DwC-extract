@@ -90,14 +90,14 @@ americas <- ggplot() +
   theme_map()
 
 
-ssp_map <- americas +
+(ssp_map <- americas +
   geom_point(aes(x = long, y = lat, size = total.spp),
              data = data, 
              colour = 'purple', alpha = .3) +
   scale_size_continuous(range = c(1, 12), 
                         breaks = c(10, 20, 30, 40, 50)) +
-  labs(size = 'Number of species')
-ssp_map
+  labs(size = 'Number of species'))
+
 
 (records_map <- americas +
   geom_point(aes(x = long, y = lat, size = total.records),
@@ -106,7 +106,23 @@ ssp_map
   scale_size_continuous(range = c(1, 12), 
                         breaks = c(20, 50, 100, 150, 200)) +
   labs(size = 'Number of records'))
-
+  
+  ## Plot species richness (observed and extrapolated maximum versus latitude
+  
+  extrapol <- read.csv("spp_rich_lat.csv", header = TRUE)
+  lat2 <- extrapol$latitude
+  qD <- extrapol$qD_max
+  obs <- extrapol$obs_max
+  df <- data.frame(lat2, qD, obs)
+  
+  (spp_lat <- ggplot(data = extrapol, aes(x = lat2)) +
+      geom_line(aes(y = qD, colour = "Extrapolated"), size = 2) + 
+      geom_line(aes(y = obs, colour = "Observed average"), size = 2) + 
+      geom_point(data = data, aes(x = lat, y = total.spp), color="black", size=2) +
+    labs(x = 'Latitude', y = 'Species richness') + 
+    theme_bw(base_size=16) +
+      scale_y_continuous(breaks=seq(0, 60, 10)) +
+      scale_x_continuous(breaks=seq(-70, 60, 10)))
 
 
 

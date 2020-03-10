@@ -115,10 +115,19 @@ americas <- ggplot() +
   obs <- extrapol$obs_max
   df <- data.frame(lat2, qD, obs)
   
+  ## exclude a site
+  extrapol2 <- extrapol[-c(4,10),]
+  lat3 <- extrapol2$latitude
+  qD2 <- extrapol2$qD_max
+  obs2 <- extrapol2$obs_max
+  df2 <- data.frame(lat3, qD2, obs2)
+  
   (spp_lat <- ggplot(data = extrapol, aes(x = lat2)) +
       geom_line(aes(y = qD, colour = "Extrapolated"), size = 2) + 
       geom_line(aes(y = obs, colour = "Observed average"), size = 2) + 
       geom_point(data = data, aes(x = lat, y = total.spp), color="black", size=2) +
+      geom_line(data = extrapol2, aes(x = lat3, y = qD2, colour = "Extrapolated"), size = 2, linetype = 3) +
+      geom_line(data = extrapol2, aes(x = lat3, y = obs2, colour = "Observed average"), size = 2, linetype = 3) +
     labs(x = 'Latitude', y = 'Species richness') + 
     theme_bw(base_size=16) +
       scale_y_continuous(breaks=seq(0, 60, 10)) +

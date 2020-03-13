@@ -12,35 +12,77 @@ setwd("~/DwC-extract/data")
 
 
 ### DATA
-data <- read.csv("ReceiverUTMkeys.csv", header = TRUE)
+data <- read.csv("stations_list.csv", header = TRUE)
+# data <- read.csv("ReceiverUTMkeys.csv", header = TRUE)
 
-long <- data$lat
-lat <- data$long
 
-# Create a color palette with handmade bins.
-# for number of records
-mybins <- seq(10, 160, by=20)
-mypalette <- colorBin( palette="YlOrBr", domain=data$depth, na.color="transparent", bins=mybins)
+### USE THIS FOR "stations_list.csv"
+sancsound <- subset.data.frame(data[data$Program == "SanctSound", ])
+mbon <- subset.data.frame(data[data$Program == "SFP-MBON", ])
+
+long1 <- sancsound$Long
+lat1 <- sancsound$Lat
+
+long2 <- mbon$Long
+lat2 <- mbon$Lat
 
 # # Prepare the text for the tooltip:
 mytext <- paste(
-  "Station: ", data$station, "<br/>",
-  "Depth ", data$depth, sep="") %>%
+  "Program: ", sancsound$Program, "<br/>",
+  "Site: ", sancsound$Site_ID, sep="") %>%
   lapply(htmltools::HTML)
 
-# Final Map
-m <- leaflet(data) %>%
-  addTiles()  %>%
-  setView( lat=25, lng=-82 , zoom=8) %>%
+mytext2 <- paste(
+  "Program: ", mbon$Program, "<br/>",
+  "Site: ", mbon$Site_ID, sep="") %>%
+  lapply(htmltools::HTML)
+
+# Create a maps factor
+
+m <- leaflet(data) %>% addTiles() %>%
+  setView( lat=25, lng=-81 , zoom=8) %>%
   addProviderTiles("Esri.WorldImagery") %>%
-  addCircleMarkers(~long, ~lat,
-                   fillColor = ~mypalette(depth), fillOpacity = 0.7, color="white", radius=12, stroke=FALSE,
-                   label = mytext,
-                   labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
+  addCircleMarkers(
+    lat=lat1, lng=long1,
+    color= "red", label = mytext,
+    labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
   ) %>%
-  addLegend( pal=mypalette, values=~depth, opacity=0.9, title = "Depth", position = "bottomright" )
+  addCircleMarkers(
+    lat=lat2, lng=long2,
+    color= "orange", label = mytext2,
+    labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
+)
 
 m
+
+#####################################################################################################################
+
+### USE THIS FOR "ReceiverUTMkeys.csv"
+
+# # Create a color palette with handmade bins.
+# # for number of records
+# mybins <- seq(10, 160, by=20)
+# mypalette <- colorBin( palette="YlOrBr", domain=data$depth, na.color="transparent", bins=mybins)
+# 
+# # # Prepare the text for the tooltip:
+# mytext <- paste(
+#   "Station: ", data$station, "<br/>",
+#   "Depth ", data$depth, sep="") %>%
+#   lapply(htmltools::HTML)
+# 
+# # Final Map
+# m <- leaflet(data) %>%
+#   addTiles()  %>%
+#   setView( lat=25, lng=-82 , zoom=8) %>%
+#   addProviderTiles("Esri.WorldImagery") %>%
+#   addCircleMarkers(~long, ~lat,
+#                    fillColor = ~mypalette(depth), fillOpacity = 0.7, color="white", radius=12, stroke=FALSE,
+#                    label = mytext,
+#                    labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
+#   ) %>%
+#   addLegend( pal=mypalette, values=~depth, opacity=0.9, title = "Depth", position = "bottomright" )
+# 
+# m
 
 
 # ## Generates a bubble plot on a map showing species richness and number of records per locality.
@@ -102,5 +144,9 @@ m
 #       scale_y_continuous(breaks=seq(0, 60, 10)) +
 #       scale_x_continuous(breaks=seq(-70, 60, 10)))
 # 
+
+
+  
+
 
 

@@ -12,48 +12,117 @@ setwd("~/DwC-extract/data")
 
 
 ### DATA
-data <- read.csv("stations_list.csv", header = TRUE)
+data <- read.csv("fknms_stations_list.csv", header = TRUE)
 # data <- read.csv("ReceiverUTMkeys.csv", header = TRUE)
 
 
 ### USE THIS FOR "stations_list.csv"
 sancsound <- subset.data.frame(data[data$Program == "SanctSound", ])
 mbon <- subset.data.frame(data[data$Program == "SFP-MBON", ])
+GOMECC_3 <- subset.data.frame(data[data$Program == "GOMECC-3", ])
+Iconic_Reefs <- subset.data.frame(data[data$Program == "Iconic Reefs", ])
+Cheeca_Rocks <- subset.data.frame(data[data$Program == "AOAT", ])
+fwc <- subset.data.frame(data[data$Program == "FWC", ])
+um <- subset.data.frame(data[data$Program == "UM", ])
 
-long1 <- sancsound$Long
-lat1 <- sancsound$Lat
+long1 <- Iconic_Reefs$Long
+lat1 <- Iconic_Reefs$Lat
 
-long2 <- mbon$Long
-lat2 <- mbon$Lat
+long2 <- sancsound$Long
+lat2 <- sancsound$Lat
+
+long3 <- mbon$Long
+lat3 <- mbon$Lat
+
+long4 <- GOMECC_3$Long
+lat4 <- GOMECC_3$Lat
+
+long5 <- Cheeca_Rocks$Long
+lat5 <- Cheeca_Rocks$Lat
+
+long6 <- fwc$Long
+lat6 <- fwc$Lat
+
+long7 <- um$Long
+lat7 <- um$Lat
 
 # # Prepare the text for the tooltip:
-mytext <- paste(
+mytext1 <- paste(
+  "Program: ", Iconic_Reefs$Program, "<br/>",
+  "Site: ", Iconic_Reefs$Site_ID, sep="") %>%
+  lapply(htmltools::HTML)
+
+mytext2 <- paste(
   "Program: ", sancsound$Program, "<br/>",
   "Site: ", sancsound$Site_ID, sep="") %>%
   lapply(htmltools::HTML)
 
-mytext2 <- paste(
+mytext3 <- paste(
   "Program: ", mbon$Program, "<br/>",
   "Site: ", mbon$Site_ID, sep="") %>%
   lapply(htmltools::HTML)
 
-# Create a maps factor
+mytext4 <- paste(
+  "Program: ", GOMECC_3$Program, "<br/>",
+  "Site: ", GOMECC_3$Site_ID, sep="") %>%
+  lapply(htmltools::HTML)
 
+mytext5 <- paste(
+  "Program: ", Cheeca_Rocks$Program, "<br/>",
+  "Site: ", Cheeca_Rocks$Site_ID, sep="") %>%
+  lapply(htmltools::HTML)
+
+mytext6 <- paste(
+  "Program: ", fwc$Program, "<br/>",
+  "Site: ", fwc$Site_ID, sep="") %>%
+  lapply(htmltools::HTML)
+
+mytext7 <- paste(
+  "Program: ", um$Program, "<br/>",
+  "Site: ", um$Site_ID, sep="") %>%
+  lapply(htmltools::HTML)
+
+# Create a maps factor
 m <- leaflet(data) %>% addTiles() %>%
   setView( lat=25, lng=-81 , zoom=8) %>%
   addProviderTiles("Esri.WorldImagery") %>%
   addCircleMarkers(
     lat=lat1, lng=long1,
-    color= "red", label = mytext,
+    color= "red", radius=10, fillOpacity = 1, label = mytext1,
     labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
   ) %>%
   addCircleMarkers(
     lat=lat2, lng=long2,
-    color= "orange", label = mytext2,
+    color= "white", radius=7, fillOpacity = 0.7, label = mytext2,
     labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
-)
-
+  )  %>%
+  addCircleMarkers(
+    lat=lat3, lng=long3,
+    color= "orange", radius=4, fillOpacity = 1, label = mytext3,
+    labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
+  ) %>%
+  addCircleMarkers(
+    lat=lat4, lng=long4,
+    color= "violet", radius=3, fillOpacity = 0, label = mytext4,
+    labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
+  ) %>%
+  addCircleMarkers(
+    lat=lat5, lng=long5,
+    color= "green", radius=5, fillOpacity = 1, label = mytext5,
+    labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
+  ) %>%
+  addCircleMarkers(
+    lat=lat6, lng=long6,
+    color= "white", radius=7, fillOpacity = 1, label = mytext6,
+    labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
+  ) %>%
+  addCircleMarkers(
+    lat=lat7, lng=long7,
+    color= "white", radius=7, fillOpacity = 1, label = mytext7,
+    labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
+)    
 m
+
 
 #####################################################################################################################
 

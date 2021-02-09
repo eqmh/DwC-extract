@@ -17,36 +17,36 @@ lat <- data$decimalLatitude
 
 # Create a color palette with handmade bins.
 # for number of records
-# mybins <- seq(10, 250, by=60)
-# mypalette <- colorBin( palette="YlOrBr", domain=data$total.records, na.color="transparent", bins=mybins)
-# 
-# # Prepare the text for the tooltip:
-# mytext <- paste(
-#   "Locality: ", data$Locality, "<br/>",
-#   "Site: ", data$Site, "<br/>",
-#   "Number of records: ", data$total.records, sep="") %>%
-#   lapply(htmltools::HTML)
-# 
-# # Prepare the text for the tooltip:
-# mytext <- paste(
-#   "Locality: ", data$Locality, "<br/>",
-#   "Site: ", data$Site, "<br/>",
-#   "Number of records: ", data$total.records, sep="") %>%
-#   lapply(htmltools::HTML)
-# 
-# # Final Map
-# m <- leaflet(data) %>%
-#   addTiles()  %>%
-#   setView( lat=0, lng=-50 , zoom=3) %>%
-#   addProviderTiles("Esri.WorldImagery") %>%
-#   addCircleMarkers(~long, ~lat,
-#                    fillColor = ~mypalette(total.records), fillOpacity = 0.7, color="white", radius=12, stroke=FALSE,
-#                    label = mytext,
-#                    labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
-#   ) %>%
-#   addLegend( pal=mypalette, values=~total.records, opacity=0.9, title = "Number of records", position = "bottomright" )
-# 
-# m
+mybins <- seq(10, 250, by=60)
+mypalette <- colorBin( palette="YlOrBr", domain=data$total.records, na.color="transparent", bins=mybins)
+
+# Prepare the text for the tooltip:
+mytext <- paste(
+  "Locality: ", data$Locality, "<br/>",
+  "Site: ", data$Site, "<br/>",
+  "Number of records: ", data$total.records, sep="") %>%
+  lapply(htmltools::HTML)
+
+# Prepare the text for the tooltip:
+mytext <- paste(
+  "Locality: ", data$Locality, "<br/>",
+  "Site: ", data$Site, "<br/>",
+  "Number of records: ", data$total.records, sep="") %>%
+  lapply(htmltools::HTML)
+
+# Final Map
+m <- leaflet(data) %>%
+  addTiles()  %>%
+  setView( lat=0, lng=-50 , zoom=3) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addCircleMarkers(~long, ~lat,
+                   fillColor = ~mypalette(total.records), fillOpacity = 0.7, color="white", radius=12, stroke=FALSE,
+                   label = mytext,
+                   labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
+  ) %>%
+  addLegend( pal=mypalette, values=~total.records, opacity=0.9, title = "Number of records", position = "bottomright" )
+
+m
 
 # for number of taxa (richness)
 mybins <- seq(0, 60, by=10)
